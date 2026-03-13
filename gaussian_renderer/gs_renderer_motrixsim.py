@@ -99,20 +99,27 @@ class GSRendererMotrixSim(GSRenderer):
                mx_model: "motrixsim.MotrixSimModel",
                mx_data: "motrixsim.SceneData",
                cam_ids:Union[List[int], np.ndarray], 
-               width:int, height:int) -> Dict[int, Tuple[Tensor, Tensor]]:
-        if -1 in cam_ids:
-            raise NotImplementedError("Free camera rendering not supported in MotrixSim bridge.")
+               width:int, height:int,
+               system_camera: Optional[Any] = None) -> Dict[int, Tuple[Tensor, Tensor]]:
 
         cam_pos_lst = []
         cam_xmat_lst = []
         fovy_lst = []
         for cid in cam_ids:
-            # assert cid < len(mx_model.cameras), f"Camera ID {cid} out of range for MotrixSim model with {len(mx_model.cameras)} cameras."
-            cam = mx_model.cameras[cid]
-            cam_pose = cam.get_pose(mx_data)
-            cam_pos_lst.append(cam_pose[:3])
-            cam_xmat_lst.append(Rotation.from_quat(cam_pose[3:7]).as_matrix().flatten())
-            fovy_lst.append(mx_model.cameras[cid].fovy) # TODO: get actual fovy from MotrixSim camera
+            if cid == -1:
+                if system_camera is None:
+                    raise ValueError("system_camera must be provided when requesting free camera (id -1) rendering.")
+                # free camera mode using system_camera
+                cam_pose = system_camera.pose
+                cam_pos_lst.append(cam_pose[:3])
+                cam_xmat_lst.append(Rotation.from_quat(cam_pose[3:7], scalar_first=False).as_matrix().flatten())
+                fovy_lst.append(45.0)  # Default fovy for system camera, adjust if available
+            else:
+                cam = mx_model.cameras[cid]
+                cam_pose = cam.get_pose(mx_data)
+                cam_pos_lst.append(cam_pose[:3])
+                cam_xmat_lst.append(Rotation.from_quat(cam_pose[3:7]).as_matrix().flatten())
+                fovy_lst.append(mx_model.cameras[cid].fovy) # TODO: get actual fovy from MotrixSim camera
 
         rgb_tensor, depth_tensor = self.render_batch(
             np.array(cam_pos_lst),
