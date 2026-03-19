@@ -1,7 +1,7 @@
 .PHONY: install lint format typecheck test ci
 
 install:
-	uv pip install -e ".[dev]"
+	uv sync --extra dev
 
 lint:
 	uv run ruff check .
