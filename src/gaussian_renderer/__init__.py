@@ -31,5 +31,5 @@ from .core.util_gau import load_ply, save_ply, transform_shs
 from .gs_renderer_motrixsim import GSRendererMotrixSim
 from .gs_renderer_mujoco import GSRendererMuJoCo
 
-__version__ = "0.1.10"
+__version__ = "0.2.0"
 __author__ = "Yufei Jia"
