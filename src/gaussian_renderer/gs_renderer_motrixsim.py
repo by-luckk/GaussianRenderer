@@ -37,7 +37,7 @@ else:
 
 if TYPE_CHECKING:
     import motrixsim
-from .src.gs_renderer import GSRenderer
+from .core.gs_renderer import GSRenderer
 
 
 class GSRendererMotrixSim(GSRenderer):

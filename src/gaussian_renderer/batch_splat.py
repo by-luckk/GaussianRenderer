@@ -41,14 +41,14 @@ import numpy as np
 import torch
 from torch import Tensor
 
-from .src.batch_rasterization import (
+from .core.batch_rasterization import (
     batch_env_render as _batch_env_render,
 )
-from .src.batch_rasterization import (
+from .core.batch_rasterization import (
     batch_update_gaussians as _batch_update_gaussians,
 )
-from .src.gaussiandata import GaussianBatchData, GaussianData
-from .src.util_gau import load_ply
+from .core.gaussiandata import GaussianBatchData, GaussianData
+from .core.util_gau import load_ply
 
 
 @dataclass
@@ -161,10 +161,6 @@ class BatchSplatRenderer:
             body_pos = torch.tensor(body_pos, device=self.device, dtype=torch.float32)
         if not isinstance(body_quat, torch.Tensor):
             body_quat = torch.tensor(body_quat, device=self.device, dtype=torch.float32)
-        if not body_pos.device == self.device:
-            body_pos = body_pos.to(self.device)
-        if not body_quat.device == self.device:
-            body_quat = body_quat.to(self.device)
         return _batch_update_gaussians(
             self.template,
             body_pos,
@@ -189,10 +185,6 @@ class BatchSplatRenderer:
             cam_pos = torch.tensor(cam_pos, device=self.device, dtype=torch.float32)
         if not isinstance(cam_xmat, torch.Tensor):
             cam_xmat = torch.tensor(cam_xmat, device=self.device, dtype=torch.float32)
-        if not cam_pos.device == self.device:
-            cam_pos = cam_pos.to(self.device)
-        if not cam_xmat.device == self.device:
-            cam_xmat = cam_xmat.to(self.device)
         return _batch_env_render(gsb, cam_pos, cam_xmat, height, width, fovy, bg_imgs=bg_imgs, minibatch=self.minibatch)
 
 

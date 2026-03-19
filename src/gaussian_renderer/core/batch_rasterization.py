@@ -146,9 +146,6 @@ def batch_render(
     depth_img = renders[..., 3:4]
 
     if bg_imgs is not None:
-        if bg_imgs.shape != (Ncam, height, width, 3):
-            raise ValueError(f"bg_imgs shape mismatch. Expected {(Ncam, height, width, 3)}, got {bg_imgs.shape}")
-
         if bg_imgs.device != device:
             bg_imgs = bg_imgs.to(device)
 
@@ -270,9 +267,6 @@ def batch_env_render(
     depth_img = renders[..., 3:4]
 
     if bg_imgs is not None:
-        if bg_imgs.shape != (Nenv, Ncam, height, width, 3):
-            raise ValueError(f"bg_imgs shape mismatch. Expected {(Nenv, Ncam, height, width, 3)}, got {bg_imgs.shape}")
-
         if bg_imgs.device != device:
             bg_imgs = bg_imgs.to(device)
 

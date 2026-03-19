@@ -31,6 +31,10 @@ When writing or modifying code, you MUST:
 - Do NOT leave commented-out code
 - Do NOT add unnecessary error handling or validation in internal code
 
-## Git Commit Guidelines
+## Git
 
-Use Conventional Commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
+Conventional Commits: `feat:` / `fix:` / `docs:` / `style:` / `refactor:` / `test:` / `chore:`
+
+- Commit often, keep history clean
+- Never commit to main — always work on feature branches
+- Delete feature branches after PR merge

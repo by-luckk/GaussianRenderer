@@ -7,3 +7,9 @@ dist/
 .vscode/.pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.DS_Store
+.env
+*.log
+.idea/
+htmlcov/
+.coverage

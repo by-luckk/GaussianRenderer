@@ -37,7 +37,7 @@ else:
 
 if TYPE_CHECKING:
     import mujoco
-from .src.gs_renderer import GSRenderer
+from .core.gs_renderer import GSRenderer
 
 
 class GSRendererMuJoCo(GSRenderer):

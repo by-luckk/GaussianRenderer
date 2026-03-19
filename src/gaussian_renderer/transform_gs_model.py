@@ -30,9 +30,9 @@ import numpy as np
 import torch
 from scipy.spatial.transform import Rotation
 
-from .src.gaussiandata import GaussianData
-from .src.super_splat_loader import save_super_splat_ply
-from .src.util_gau import load_ply, save_ply, transform_shs
+from .core.gaussiandata import GaussianData
+from .core.super_splat_loader import save_super_splat_ply
+from .core.util_gau import load_ply, save_ply, transform_shs
 
 
 def transform_mesh(

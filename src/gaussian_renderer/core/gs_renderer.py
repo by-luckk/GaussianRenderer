@@ -42,24 +42,11 @@ from .util_gau import load_ply
 
 class GSRenderer:
     def __init__(self, models_dict: Dict[str, str]):
-        """
-        初始化高斯飞溅渲染器
-
-        Args:
-            models_dict: 模型字典,键为模型名称,值为模型路径
-        """
         if not GSPLAT_AVAILABLE:
             raise RuntimeError("gsplat backend requested but not available. Please install gsplat.")
 
         self.gaussians = None
         self.need_rerender = True
-
-        # Buffers for updates
-        self.gau_ori_xyz_all_cu = None
-        self.gau_ori_rot_all_cu = None
-        self.gau_xyz_all_cu = None
-        self.gau_rot_all_cu = None
-
         self.gaussians_all: dict[GaussianData] = {}
         self.gaussians_idx = {}
         self.gaussians_size = {}
@@ -136,15 +123,8 @@ class GSRenderer:
         else:
             self.gaussians = gaus.to_cuda()
 
-        num_points = self.gaussians.xyz.shape[0]
-
-        self.gau_ori_xyz_all_cu = torch.zeros(num_points, 3).cuda().requires_grad_(False)
-        self.gau_ori_xyz_all_cu[..., :] = torch.from_numpy(gau_xyz).cuda().requires_grad_(False)
-        self.gau_ori_rot_all_cu = torch.zeros(num_points, 4).cuda().requires_grad_(False)
-        self.gau_ori_rot_all_cu[..., :] = torch.from_numpy(gau_rot).cuda().requires_grad_(False)
-
-        self.gau_xyz_all_cu = torch.zeros(num_points, 3).cuda().requires_grad_(False)
-        self.gau_rot_all_cu = torch.zeros(num_points, 4).cuda().requires_grad_(False)
+        self.gau_ori_xyz_all_cu = torch.from_numpy(gau_xyz).float().cuda()
+        self.gau_ori_rot_all_cu = torch.from_numpy(gau_rot).float().cuda()
 
     def set_objects_mapping(self, objects_info: List[Tuple[str, int, int]]):
         """
@@ -199,9 +179,6 @@ class GSRenderer:
 
         self.gaussians.xyz[mask] = xyz_new
         self.gaussians.rot[mask] = rot_new
-
-        self.gau_xyz_all_cu = self.gaussians.xyz
-        self.gau_rot_all_cu = self.gaussians.rot
 
     def render_batch(
         self,

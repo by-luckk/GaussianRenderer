@@ -39,9 +39,9 @@ parent_dir = os.path.dirname(current_dir)
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
-from .src.batch_rasterization import batch_render
-from .src.gaussiandata import GaussianData
-from .src.util_gau import load_ply
+from .core.batch_rasterization import batch_render
+from .core.gaussiandata import GaussianData
+from .core.util_gau import load_ply
 
 
 class SimpleViewer:

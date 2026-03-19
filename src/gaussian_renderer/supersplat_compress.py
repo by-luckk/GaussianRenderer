@@ -52,8 +52,8 @@ sys.path.insert(0, str(project_root))
 
 from plyfile import PlyData
 
-from .src.super_splat_loader import is_super_splat_format, save_super_splat_ply
-from .src.util_gau import load_ply
+from .core.super_splat_loader import is_super_splat_format, save_super_splat_ply
+from .core.util_gau import load_ply
 
 
 def find_ply_files(directory: Path, recursive: bool = True) -> List[Path]:
