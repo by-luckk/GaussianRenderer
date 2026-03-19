@@ -2,8 +2,8 @@ import tempfile
 from pathlib import Path
 
 import pytest
-
 from conftest import BANANA_PLY
+
 from gaussian_renderer import load_ply, save_ply
 
 

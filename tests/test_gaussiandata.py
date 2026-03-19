@@ -1,6 +1,6 @@
 import torch
 
-from gaussian_renderer import GaussianData, GaussianBatchData
+from gaussian_renderer import GaussianBatchData, GaussianData
 
 
 def make_gaussian(n=10):
