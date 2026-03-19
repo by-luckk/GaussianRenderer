@@ -1,4 +1,5 @@
 """Tests for GSRendererMuJoCo — all CPU-only, no CUDA, no real mujoco binary."""
+
 import sys
 from unittest.mock import MagicMock, patch
 
@@ -14,6 +15,7 @@ mujoco_stub = sys.modules["mujoco"]
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_mj_model(body_names):
     model = MagicMock()
@@ -52,6 +54,7 @@ def _make_renderer(body_names, models_dict):
 # Tests
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.skipif(not BANANA_PLY.exists(), reason="banana.ply not found")
 def test_import_error_without_mujoco():
     """ImportError raised when mujoco is not installed."""
@@ -62,9 +65,7 @@ def test_import_error_without_mujoco():
     mod._MUJOCO_IMPORT_ERROR = ImportError("no mujoco")
     try:
         with pytest.raises(ImportError, match="MuJoCo is not installed"):
-            GSRendererMuJoCo.__new__(GSRendererMuJoCo).__init__(
-                {"banana": str(BANANA_PLY)}, MagicMock()
-            )
+            GSRendererMuJoCo.__new__(GSRendererMuJoCo).__init__({"banana": str(BANANA_PLY)}, MagicMock())
     finally:
         mod.mujoco = orig
         mod._MUJOCO_IMPORT_ERROR = orig_err

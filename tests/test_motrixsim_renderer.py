@@ -1,4 +1,5 @@
 """Tests for GSRendererMotrixSim — CPU-only, no real motrixsim binary."""
+
 import sys
 from unittest.mock import MagicMock, patch
 
@@ -10,10 +11,10 @@ motrixsim_stub = sys.modules["motrixsim"]
 
 from gaussian_renderer.gs_renderer_motrixsim import GSRendererMotrixSim  # noqa: E402
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_mx_model(link_names):
     model = MagicMock()
@@ -41,6 +42,7 @@ def _make_renderer(link_names, ply_path):
 # Tests
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.skipif(not BANANA_PLY.exists(), reason="banana.ply not found")
 def test_import_error_without_motrixsim():
     """ImportError raised when motrixsim is not installed."""
@@ -51,9 +53,7 @@ def test_import_error_without_motrixsim():
     mod._MOTRIXSIM_IMPORT_ERROR = ImportError("no motrixsim")
     try:
         with pytest.raises(ImportError, match="MotrixSim is not installed"):
-            GSRendererMotrixSim.__new__(GSRendererMotrixSim).__init__(
-                {"banana": str(BANANA_PLY)}, MagicMock()
-            )
+            GSRendererMotrixSim.__new__(GSRendererMotrixSim).__init__({"banana": str(BANANA_PLY)}, MagicMock())
     finally:
         mod.motrixsim = orig
         mod._MOTRIXSIM_IMPORT_ERROR = None

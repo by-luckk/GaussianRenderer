@@ -23,13 +23,13 @@
 # SOFTWARE.
 
 from .batch_splat import BatchSplatConfig, BatchSplatRenderer, MjxBatchSplatRenderer, MtxBatchSplatRenderer
-from .gs_renderer_motrixsim import GSRendererMotrixSim
-from .gs_renderer_mujoco import GSRendererMuJoCo
 from .core.batch_rasterization import batch_env_render, batch_render, batch_update_gaussians
 from .core.gaussiandata import GaussianBatchData, GaussianData
 from .core.gs_renderer import GSRenderer
 from .core.super_splat_loader import is_super_splat_format, load_super_splat_ply, save_super_splat_ply
 from .core.util_gau import load_ply, save_ply, transform_shs
+from .gs_renderer_motrixsim import GSRendererMotrixSim
+from .gs_renderer_mujoco import GSRendererMuJoCo
 
 __version__ = "0.1.10"
 __author__ = "Yufei Jia"

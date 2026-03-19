@@ -1,10 +1,10 @@
 import tempfile
 from pathlib import Path
 
+import numpy as np
 import pytest
 from conftest import BANANA_PLY
 from plyfile import PlyData, PlyElement
-import numpy as np
 
 from gaussian_renderer import is_super_splat_format, load_ply, save_ply
 from gaussian_renderer.core.super_splat_loader import save_super_splat_ply
