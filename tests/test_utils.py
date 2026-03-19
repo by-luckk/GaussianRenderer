@@ -33,4 +33,4 @@ def test_save_load_roundtrip():
 def test_version():
     from gaussian_renderer import __version__
 
-    assert __version__ == "0.1.10"
+    assert __version__ == "0.2.0"
