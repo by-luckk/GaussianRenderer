@@ -54,7 +54,7 @@ version = {attr = "gaussian_renderer.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["gaussian_renderer*"]
+include = ["gaussian_renderer*", "genesis*"]
 
 [tool.ruff]
 line-length = 120
