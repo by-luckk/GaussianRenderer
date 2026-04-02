@@ -75,6 +75,17 @@ uv run python -m gaussian_renderer.transform_gs_model input.ply
 
 The repository also includes local Genesis-based simulation scripts under `tests/`.
 
+For MPM-driven Gaussian rendering, use the YAML config at `tests/config/mpm_gaussian_flower.yaml`:
+
+```bash
+uv run python -m tests.mpm_gaussian_flower_render
+```
+
+The config supports two deformation modes:
+
+- `knn_xyz`: keep the original KNN position update and only deform Gaussian centers
+- `knn_rigid`: keep the same KNN position update, then fit a local rigid rotation from the same KNN neighborhood and update Gaussian `rot`
+
 Run the PBD flower example:
 
 ```bash

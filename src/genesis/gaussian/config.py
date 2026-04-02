@@ -37,6 +37,11 @@ class BindingConfig:
 
 
 @dataclass
+class DeformationConfig:
+    mode: str
+
+
+@dataclass
 class RenderConfig:
     width: int
     height: int
@@ -56,6 +61,7 @@ class MPMGaussianConfig:
     sampling: SamplingConfig
     simulation: SimulationConfig
     binding: BindingConfig
+    deformation: DeformationConfig
     render: RenderConfig
 
 
@@ -78,7 +84,15 @@ def load_mpm_gaussian_config(path: str | Path) -> MPMGaussianConfig:
     sampling = SamplingConfig(**data["sampling"])
     simulation = SimulationConfig(**data["simulation"])
     binding = BindingConfig(**data["binding"])
+    deformation = DeformationConfig(**data["deformation"])
     render_data = dict(data["render"])
     render_data["lookat"] = tuple(render_data["lookat"])
     render = RenderConfig(**render_data)
-    return MPMGaussianConfig(paths=paths, sampling=sampling, simulation=simulation, binding=binding, render=render)
+    return MPMGaussianConfig(
+        paths=paths,
+        sampling=sampling,
+        simulation=simulation,
+        binding=binding,
+        deformation=deformation,
+        render=render,
+    )

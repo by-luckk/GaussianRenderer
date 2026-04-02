@@ -65,8 +65,15 @@ def main() -> None:
         particle_points,
         k=config.binding.knn_k,
         device=gs.device,
+        gaussian_rot=np.asarray(gaussian_data.rot, dtype=np.float32),
     )
-    bridge = MPMGaussianRendererBridge(config.paths.input_ply, gaussian_data, binding, config.render)
+    bridge = MPMGaussianRendererBridge(
+        config.paths.input_ply,
+        gaussian_data,
+        binding,
+        config.render,
+        config.deformation.mode,
+    )
 
     output_dir = config.paths.output_dir
     rgb_dir = output_dir / "rgb"

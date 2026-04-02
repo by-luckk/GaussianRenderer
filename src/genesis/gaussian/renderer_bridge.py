@@ -7,7 +7,7 @@ from gaussian_renderer.core.gs_renderer import GSRenderer
 
 from .binding import GaussianParticleBinding
 from .config import RenderConfig
-from .deformation import deform_gaussian_xyz
+from .deformation import deform_gaussian_rot, deform_gaussian_xyz
 
 
 def make_camera_pose(render: RenderConfig) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -29,16 +29,27 @@ def make_camera_pose(render: RenderConfig) -> tuple[np.ndarray, np.ndarray, np.n
 
 
 class MPMGaussianRendererBridge:
-    def __init__(self, input_ply: str | Path, gaussian_data, binding: GaussianParticleBinding, render: RenderConfig):
+    def __init__(
+        self,
+        input_ply: str | Path,
+        gaussian_data,
+        binding: GaussianParticleBinding,
+        render: RenderConfig,
+        deformation_mode: str,
+    ):
         self.binding = binding
         self.render = render
+        self.deformation_mode = deformation_mode
         self.renderer = GSRenderer({"flower": str(input_ply)})
         self.renderer.apply_gaussian_deformation(xyz=gaussian_data.xyz, scale=gaussian_data.scale)
         self.cam_pos, self.cam_xmat, self.fovy = make_camera_pose(render)
 
     def update_from_particles(self, particle_pos):
         xyz = deform_gaussian_xyz(particle_pos, self.binding)
-        self.renderer.apply_gaussian_deformation(xyz=xyz)
+        rot = None
+        if self.deformation_mode == "knn_rigid":
+            rot = deform_gaussian_rot(particle_pos, self.binding)
+        self.renderer.apply_gaussian_deformation(xyz=xyz, rot=rot)
         return xyz
 
     def render_frame(self):

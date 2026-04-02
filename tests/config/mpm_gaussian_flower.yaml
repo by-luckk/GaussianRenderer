@@ -22,6 +22,9 @@ simulation:
 binding:
   knn_k: 4
 
+deformation:
+  mode: knn_rigid
+
 render:
   width: 640
   height: 640
@@ -29,7 +32,7 @@ render:
   lookat: [0.0, 0.0, 0.12]
   distance: 0.45
   elevation_deg: 22.0
-  azimuth_deg: -62.0
+  azimuth_deg: 28.0
   fps: 24
   render_every: 1
   save_depth: false

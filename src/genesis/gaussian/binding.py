@@ -11,6 +11,7 @@ class GaussianParticleBinding:
     weights: torch.Tensor
     particle_rest: torch.Tensor
     gaussian_rest_xyz: torch.Tensor
+    gaussian_rest_rot: torch.Tensor | None = None
 
 
 def build_gaussian_particle_binding(
@@ -18,6 +19,7 @@ def build_gaussian_particle_binding(
     particle_xyz: np.ndarray,
     k: int,
     device: torch.device | str,
+    gaussian_rot: np.ndarray | None = None,
 ) -> GaussianParticleBinding:
     k = min(int(k), len(particle_xyz))
     tree = cKDTree(particle_xyz)
@@ -38,4 +40,7 @@ def build_gaussian_particle_binding(
         weights=torch.as_tensor(weights, device=device, dtype=torch.float32),
         particle_rest=torch.as_tensor(particle_xyz, device=device, dtype=torch.float32),
         gaussian_rest_xyz=torch.as_tensor(gaussian_xyz, device=device, dtype=torch.float32),
+        gaussian_rest_rot=(
+            None if gaussian_rot is None else torch.as_tensor(gaussian_rot, device=device, dtype=torch.float32)
+        ),
     )
