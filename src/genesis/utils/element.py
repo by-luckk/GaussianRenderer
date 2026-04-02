@@ -52,7 +52,7 @@ def mesh_to_elements(file, pos=(0, 0, 0), scale=1.0, tet_cfg=dict()):
 
     if not is_cached_loaded:
         with gs.logger.timer(f"Tetrahedralization with configuration {tet_cfg} and generating `.tet` file:"):
-            verts, elems = mu.tetrahedralize_mesh(mesh, tet_cfg)
+            verts, elems = mu.tetrahedralize_mesh(mesh, tet_cfg, source_path=file)
 
             os.makedirs(os.path.dirname(tet_file_path), exist_ok=True)
             with open(tet_file_path, "wb") as tet_file:

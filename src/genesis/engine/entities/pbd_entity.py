@@ -511,9 +511,9 @@ class PBD3DEntity(PBDTetEntity):
     def sample(self):
         super().sample()
 
-        if self._vmesh.volume < 1e-6:
+        if self._mesh.volume < 1e-6:
             gs.raise_exception("Input mesh has zero volume.")
-        self._mass = self._vmesh.volume * self.material.rho
+        self._mass = self._mesh.volume * self.material.rho
 
         tet_cfg = mu.generate_tetgen_config_from_morph(self.morph)
         particles, elems, *_ = self._mesh.tetrahedralize(tet_cfg)

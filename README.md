@@ -71,6 +71,66 @@ uv run python -m gaussian_renderer.supersplat_compress input.ply
 uv run python -m gaussian_renderer.transform_gs_model input.ply
 ```
 
+### Local simulation examples
+
+The repository also includes local Genesis-based simulation scripts under `tests/`.
+
+Run the PBD flower example:
+
+```bash
+uv run python -m tests.pbd_fall_flower
+```
+
+Common options:
+
+```bash
+uv run python -m tests.pbd_fall_flower --cpu
+uv run python -m tests.pbd_fall_flower --steps 500
+uv run python -m tests.pbd_fall_flower --output tests/results/flower1_pbd_pos.npy
+uv run python -m tests.pbd_fall_flower --render-mesh
+```
+
+This script simulates `tests/assets/flower1.obj` as a PBD elastic body and saves:
+
+- particle trajectory to `tests/results/flower1_pbd_pos.npy` with shape `(T, N, 3)`
+- mesh trajectory to `tests/results/flower1_pbd_mesh.npz` with keys `vertices` and `faces`
+
+To render the full surface mesh motion after simulation:
+
+```bash
+uv run python -m tests.pbd_fall_flower --render-mesh
+```
+
+This writes mesh frames to `tests/results/flower1_pbd_mesh_frames/` and a GIF to `tests/results/flower1_pbd_mesh.gif`.
+
+To render an existing saved mesh trajectory without rerunning simulation:
+
+```bash
+uv run python -m tests.pbd_fall_flower --render-only
+```
+
+### Mesh visualization
+
+For a simple offline mesh preview, render a mesh file to PNG:
+
+```bash
+uv run python -m tests.visualize_mesh tests/assets/flower1.obj
+```
+
+If mesh repair exports a repaired mesh, you can preview that file directly:
+
+```bash
+uv run python -m tests.visualize_mesh tests/assets/flower1_repaired.obj
+```
+
+By default the script writes a PNG next to the input mesh. You can also choose the output path and camera view:
+
+```bash
+uv run python -m tests.visualize_mesh tests/assets/flower1_repaired.obj \
+  --output tests/results/flower1_repaired_view.png \
+  --elev 25 --azim 35
+```
+
 ## Development
 
 ```bash

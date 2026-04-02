@@ -9,6 +9,7 @@ import trimesh
 import genesis as gs
 import genesis.utils.mesh as mu
 import genesis.utils.gltf as gltf_utils
+import genesis.utils.mesh_repair as mur
 import genesis.utils.particle as pu
 from genesis.options.surfaces import Surface
 from genesis.repr_base import RBC
@@ -129,6 +130,16 @@ class Mesh(RBC):
         """
         Remesh for tetrahedralization.
         """
+        if fix:
+            self._mesh = mur.repair_volume_mesh(
+                self._mesh,
+                context="mesh before remesh",
+                solidify=True,
+                thickness=edge_len_abs,
+                aggressive_solidify=False,
+                source_path=self._metadata.get("mesh_path"),
+            )
+
         rm_file_path = mu.get_remesh_path(self.verts, self.faces, edge_len_abs, edge_len_ratio, fix)
 
         is_cached_loaded = False
@@ -163,6 +174,15 @@ class Mesh(RBC):
                 pkl.dump((verts, faces), file)
 
         self._mesh = trimesh.Trimesh(vertices=verts, faces=faces)
+        if fix:
+            self._mesh = mur.repair_volume_mesh(
+                self._mesh,
+                context="mesh after remesh",
+                solidify=True,
+                thickness=edge_len_abs,
+                aggressive_solidify=False,
+                source_path=self._metadata.get("mesh_path"),
+            )
         self.clear_visuals()
 
     def tetrahedralize(self, tet_cfg):

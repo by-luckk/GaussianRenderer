@@ -18,6 +18,7 @@ from PIL import Image
 import genesis as gs
 
 from . import geom as gu
+from . import mesh_repair as mru
 from .misc import (
     get_assets_dir,
     get_cvx_cache_dir,
@@ -1056,7 +1057,15 @@ def make_tetgen_switches(cfg):
     return "".join(flags)
 
 
-def tetrahedralize_mesh(mesh, tet_cfg):
+def tetrahedralize_mesh(mesh, tet_cfg, source_path=None):
+    mesh = mru.repair_volume_mesh(
+        mesh,
+        context="mesh before tetrahedralization",
+        solidify=True,
+        thickness=None,
+        aggressive_solidify=False,
+        source_path=source_path,
+    )
     tet = tetgen.TetGen(mesh.vertices.astype(np.float64, copy=False), mesh.faces.astype(np.int32, copy=False))
 
     # Build and apply the switches string directly, since
