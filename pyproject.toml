@@ -15,6 +15,7 @@ dependencies = [
     "plyfile",
     "trimesh",
     "gsplat",
+    "PyYAML",
 ]
 
 [project.optional-dependencies]

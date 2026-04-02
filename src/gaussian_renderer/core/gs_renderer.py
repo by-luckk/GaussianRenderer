@@ -122,9 +122,16 @@ class GSRenderer:
             self.gaussians = gaus_all.to_cuda()
         else:
             self.gaussians = gaus.to_cuda()
+            gau_xyz = self.gaussians.xyz.detach().cpu().numpy()
+            gau_rot = self.gaussians.rot.detach().cpu().numpy()
 
         self.gau_ori_xyz_all_cu = torch.from_numpy(gau_xyz).float().cuda()
         self.gau_ori_rot_all_cu = torch.from_numpy(gau_rot).float().cuda()
+
+    def _to_device_tensor(self, value: Union[np.ndarray, Tensor]) -> Tensor:
+        if isinstance(value, Tensor):
+            return value.to(device=self.gaussians.device, dtype=torch.float32)
+        return torch.as_tensor(value, device=self.gaussians.device, dtype=torch.float32)
 
     def set_objects_mapping(self, objects_info: List[Tuple[str, int, int]]):
         """
@@ -179,6 +186,20 @@ class GSRenderer:
 
         self.gaussians.xyz[mask] = xyz_new
         self.gaussians.rot[mask] = rot_new
+
+    @torch.no_grad()
+    def apply_gaussian_deformation(
+        self,
+        xyz: Union[np.ndarray, Tensor, None] = None,
+        rot: Union[np.ndarray, Tensor, None] = None,
+        scale: Union[np.ndarray, Tensor, None] = None,
+    ) -> None:
+        if xyz is not None:
+            self.gaussians.xyz.copy_(self._to_device_tensor(xyz))
+        if rot is not None:
+            self.gaussians.rot.copy_(self._to_device_tensor(rot))
+        if scale is not None:
+            self.gaussians.scale.copy_(self._to_device_tensor(scale))
 
     def render_batch(
         self,

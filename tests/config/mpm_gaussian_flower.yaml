@@ -1,0 +1,35 @@
+paths:
+  input_ply: ../assets/flower1.ply
+  output_dir: ../results/flower1_mpm_gaussian
+
+sampling:
+  max_particles: 8192
+  target_extent: 0.12
+  opacity_quantile: 0.3
+  drop_height: null
+  drop_clearance: 0.08
+
+simulation:
+  steps: 300
+  plane_height: 0.0
+  gravity_z: -9.8
+  youngs_modulus: 80000.0
+  poisson_ratio: 0.28
+  density: 500.0
+  dt: 0.002
+  substeps: 10
+
+binding:
+  knn_k: 4
+
+render:
+  width: 640
+  height: 640
+  fovy_deg: 45.0
+  lookat: [0.0, 0.0, 0.12]
+  distance: 0.45
+  elevation_deg: 22.0
+  azimuth_deg: -62.0
+  fps: 24
+  render_every: 1
+  save_depth: false
